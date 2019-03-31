@@ -1,16 +1,12 @@
 package com.goreactive.reactivedemo.controller;
 
 import com.goreactive.reactivedemo.Employee;
-import org.apache.commons.compress.utils.Iterators;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Iterator;
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 public class HelloController {
@@ -19,14 +15,14 @@ public class HelloController {
     private EmployeeRepository employeeRepository;
 
     @RequestMapping("/employees")
-    public List<Employee> getAllEmployees() {
-        Iterable<Employee> employeeIterable = employeeRepository.findAll();
-        return Lists.newArrayList(employeeIterable.iterator());
+    public Flux<Employee> getAllEmployees() {
+        Flux<Employee> employeeFlux = employeeRepository.findAll();
+        return employeeFlux;
     }
 
 }
 
 @Repository
-interface EmployeeRepository extends CrudRepository<Employee, String> {
+interface EmployeeRepository extends ReactiveMongoRepository<Employee, String> {
 
 }
